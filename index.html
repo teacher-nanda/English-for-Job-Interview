@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Job Interview Course</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=DM+Sans:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>*{box-sizing:border-box}body{margin:0;font-family:'DM Sans',system-ui,sans-serif;background:#0F2433;color:#fff}
+.hero{padding:48px 32px 24px;text-align:center}.hero small{letter-spacing:.3em;text-transform:uppercase;color:#FFD84D;font-weight:800}
+.hero h1{font-family:'Fredoka',sans-serif;font-size:clamp(2.4rem,5vw,4rem);margin:10px 0 6px}.hero p{font-size:1.15rem;opacity:.85;margin:0 auto;max-width:720px;line-height:1.6}
+.lv{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:18px 0 0}.lv span{background:rgba(255,255,255,.12);border-radius:999px;padding:6px 16px;font-weight:700}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;padding:24px 32px 40px;max-width:1500px;margin:0 auto}
+.card{position:relative;display:block;text-decoration:none;color:#fff;background:rgba(255,255,255,.07);border:3px solid var(--c);border-radius:22px;padding:20px 18px 22px;transition:transform .15s}
+a.card:hover{transform:translateY(-4px);background:rgba(255,255,255,.13)}.card .n{position:absolute;top:12px;right:16px;font-family:'Fredoka';font-size:1.6rem;opacity:.5}
+.card .e{font-size:2.6rem}.card h3{font-family:'Fredoka';margin:8px 0 6px;font-size:1.3rem;line-height:1.2}.card p{margin:0;opacity:.85;line-height:1.5;font-size:1rem}
+.soon{opacity:.55;border-style:dashed}.tag{display:inline-block;margin-top:10px;background:rgba(255,255,255,.15);border-radius:999px;padding:2px 12px;font-size:.8rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.nb{text-align:center;padding-bottom:40px}.nb button{background:#1F7A5A;color:#fff;border:none;border-radius:14px;padding:14px 30px;font-size:1.1rem;font-weight:800;cursor:pointer;font-family:inherit}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}</style></head><body>
+<div class="hero"><small>Conversational English with teacher Nanda</small><h1>🎤 Job Interview Course</h1>
+<p>Ten interactive lessons to prepare for job interviews in English. In every lesson you can choose your level at the top of the screen.</p>
+<div class="lv"><span>🌱 Support</span><span>🎯 Standard</span><span>🔥 Challenge</span></div></div>
+<div class="grid"><a class="card" href="L1/index.html" style="--c:#1B9AAA"><div class="n">1</div><div class="e">🧪</div><h3>Welcome to the Interview Lab</h3><p>Storytelling, why interviewers ask, "Tell me about yourself"</p></a><a class="card" href="L2/index.html" style="--c:#E0457B"><div class="n">2</div><div class="e">🦸</div><h3>Strengths & Weaknesses</h3><p>Superpowers, green flags and red flags</p></a><a class="card" href="L3/index.html" style="--c:#F28C28"><div class="n">3</div><div class="e">🗺️</div><h3>Why this job? Your Road Map</h3><p>Motivation, the job ad, career goals</p></a><a class="card" href="L4/index.html" style="--c:#C9A227"><div class="n">4</div><div class="e">🏆</div><h3>Your Experience in the Spotlight</h3><p>Achievements, strong verbs, numbers</p></a><a class="card" href="L5/index.html" style="--c:#5B6CFF"><div class="n">5</div><div class="e">⭐</div><h3>STAR Stories, Part 1</h3><p>Situation · Task · Action · Result</p></a><a class="card" href="L6/index.html" style="--c:#FF6F59"><div class="n">6</div><div class="e">🎭</div><h3>STAR Stories, Part 2</h3><p>Difficult people, change, diplomatic language</p></a><a class="card" href="L7/index.html" style="--c:#D9822B"><div class="n">7</div><div class="e">📄</div><h3>Your CV</h3><p>Own every line: gaps, changes and strong bullets</p></a><a class="card" href="L8/index.html" style="--c:#2FB8A0"><div class="n">8</div><div class="e">🌍</div><h3>Company Knowledge & Culture</h3><p>Research, cultural differences, small talk</p></a><a class="card" href="L9/index.html" style="--c:#FF8A5B"><div class="n">9</div><div class="e">💬</div><h3>Confidence & Your Questions</h3><p>Questions to ask, clarifying, confirming the appointment</p></a><a class="card" href="L10/index.html" style="--c:#F5B700"><div class="n">10</div><div class="e">🎤</div><h3>Mock Interview Day</h3><p>Full simulation, scorecard and feedback</p></a></div>
+<div class="nb"><button onclick="openNotebook()">📓 Open my Interview Notebook</button></div>
+<script>var AB_KEY='jic::ans';
+var AB_KEY = 'jic::ans';
+function abLoad(){ try{ return JSON.parse(localStorage.getItem(AB_KEY)) || {}; }catch(e){ return {}; } }
+function abSave(o){ try{ localStorage.setItem(AB_KEY, JSON.stringify(o)); }catch(e){} }
+function abStepsKey(ab){ return 'jic::in::' + ab.dataset.key; }
+function openNotebook(){
+  var all = abLoad(), keys = Object.keys(all).sort(function(a,b){ return String(all[a].order).localeCompare(String(all[b].order)); });
+  if (!keys.length){ alert('Your Interview Notebook is empty. Build an answer in a lesson first!'); return; }
+  var win = window.open('', '_blank'), cards = '';
+  keys.forEach(function(k){ var a = all[k]; cards += '<div class="c"><div class="h">'+a.lesson+' · '+a.title+'</div><p>'+String(a.text).replace(/</g,'&lt;')+'</p></div>'; });
+  var today = new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>My Interview Notebook</title><style>'+
+    'body{font-family:"DM Sans","Segoe UI",sans-serif;max-width:800px;margin:0 auto;padding:0 0 30px;color:#1C2B3A}'+
+    '.hero{background:linear-gradient(135deg,#12324A,#1B6E96);color:#fff;padding:32px 34px;border-radius:0 0 24px 24px}'+
+    '.hero small{letter-spacing:.2em;text-transform:uppercase;color:#FFD84D;font-weight:800}.hero h1{margin:6px 0 4px;font-size:2.1rem}.hero p{margin:0;opacity:.9}'+
+    '.tip{margin:22px 28px;background:#FFF8E1;border:3px solid #FFD84D;border-radius:18px;padding:14px 20px;font-size:1.02rem;line-height:1.6}'+
+    '.c{margin:0 28px 16px;border:1px solid #D5DEE5;border-radius:12px;overflow:hidden;break-inside:avoid}.h{background:#12324A;color:#fff;padding:8px 14px;font-weight:700}'+
+    '.c p{margin:0;padding:12px 16px;line-height:1.75;font-size:1.05rem}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}</style></head><body>'+
+    '<div class="hero"><small>Conversational English with teacher Nanda</small><h1>🎤 My Interview Notebook</h1><p>'+today+'</p></div>'+
+    '<div class="tip"><b>How to use this page:</b> read each answer out loud. Then say it again without looking, in your own words. Practice a little every day!</div>'+cards+'</body></html>');
+  win.document.close(); setTimeout(function(){ win.print(); }, 600);
+}
+
+</script></body></html>

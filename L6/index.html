@@ -614,7 +614,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#0E4D5C;}
   <div class="banner banner-speaking">🎤 Speaking</div>
   <div class="slide-main"><div class="content">
     <h2>Build your own STAR story</h2>
-<p class="inst-light">Choose a real difficult situation. Stay diplomatic.</p><div class="ab" data-key="L6-star" data-title="A difficult situation" data-order="L6-a"><div class="ab-step"><div class="ab-lab">S · Situation</div><div class="ab-hint">What was happening? Use soft language.</div><div class="sup"><span class="ab-sup">Frame: We had different… about…</span></div><textarea class="ab-in" rows="2" aria-label="S · Situation"></textarea></div><div class="ab-step"><div class="ab-lab">T · Task</div><div class="ab-hint">What did you need to achieve?</div><div class="sup"><span class="ab-sup">Frame: I needed to…</span></div><textarea class="ab-in" rows="2" aria-label="T · Task"></textarea></div><div class="ab-step"><div class="ab-lab">A · Action</div><div class="ab-hint">What did YOU do?</div><div class="sup"><span class="ab-sup">Frame: I listened… then I suggested…</span></div><textarea class="ab-in" rows="2" aria-label="A · Action"></textarea></div><div class="ab-step"><div class="ab-lab">R · Result</div><div class="ab-hint">How did it end? What did you learn?</div><div class="sup"><span class="ab-sup">Frame: In the end, we… I learned that…</span></div><textarea class="ab-in" rows="2" aria-label="R · Result"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
+<p class="inst-light">Choose a real difficult situation. Stay diplomatic.</p><div class="ab" data-key="L6-star" data-title="A difficult situation" data-order="L6-a"><div class="ab-step"><div class="ab-lab">S · Situation</div><div class="ab-hint">What was happening? Use soft language.</div><div class="sup"><span class="ab-sup">Frame: We had different… about…</span></div><textarea class="ab-in" rows="2" aria-label="S · Situation"></textarea></div><div class="ab-step"><div class="ab-lab">T · Task</div><div class="ab-hint">What did you need to achieve?</div><div class="sup"><span class="ab-sup">Frame: I needed to…</span></div><textarea class="ab-in" rows="2" aria-label="T · Task"></textarea></div><div class="ab-step"><div class="ab-lab">A · Action</div><div class="ab-hint">What did YOU do?</div><div class="sup"><span class="ab-sup">Frame: I listened… then I suggested…</span></div><textarea class="ab-in" rows="2" aria-label="A · Action"></textarea></div><div class="ab-step"><div class="ab-lab">R · Result</div><div class="ab-hint">How did it end? What did you learn?</div><div class="sup"><span class="ab-sup">Frame: In the end, we… I learned that…</span></div><textarea class="ab-in" rows="2" aria-label="R · Result"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -659,9 +659,8 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#0E4D5C;}
   <div id="counter">1/1</div>
   <button id="nextBtn" onclick="goTo(current+1)">Next ▶</button>
   <button id="dlNotesBtn" onclick="savePDF()" style="margin-left:10px;padding:5px 12px;background:#2E2A6B;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">💾 Save Notes</button>
-  <button onclick="this.blur();printAll()" style="margin-left:6px;padding:5px 12px;background:#0E5A8A;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">🖨️ Print Lesson</button>
   <button onclick="openNotebook()" style="margin-left:6px;padding:5px 12px;background:#1F7A5A;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">📓 Notebook</button>
-  <button onclick="this.blur();clearAllNotes()" title="Delete all notes and start a new lesson" style="margin-left:6px;padding:5px 12px;background:#8B2E2E;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">🗑️ Clear Notes</button>
+  <button onclick="this.blur();clearAllNotes()" title="Clear the notes and everything you filled in, to start fresh" style="margin-left:6px;padding:5px 12px;background:#8B2E2E;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">🗑️ Clear All</button>
 </div>
 
 <script>
@@ -805,11 +804,16 @@ function notesHilite(color){
 function saveNotes(){ notesData[current] = document.getElementById('notesTA').innerHTML; try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){} }
 function loadNotes(idx){ document.getElementById('notesTA').innerHTML = notesData[idx] || ''; }
 function clearAllNotes(){
-  if(!confirm('Delete all notes for this lesson? This cannot be undone.')) return;
-  Object.keys(notesData).forEach(function(k){ delete notesData[k]; });
-  var ta = document.getElementById('notesTA');
-  if (ta) ta.innerHTML = '';
-  try{ if (typeof notesStoreKey !== 'undefined') localStorage.removeItem(notesStoreKey); }catch(e){}
+  if(!confirm('Clear everything in this lesson? This deletes your notes AND all your answers (Answer Builders and Interview Notebook entries for this lesson). This cannot be undone.')) return;
+  try{
+    if (typeof notesStoreKey !== 'undefined') localStorage.removeItem(notesStoreKey);
+    document.querySelectorAll('.ab').forEach(function(ab){ localStorage.removeItem('jic::in::' + ab.dataset.key); });
+    var all = JSON.parse(localStorage.getItem('jic::ans')) || {};
+    Object.keys(all).forEach(function(k){ if (all[k].lesson === (document.body.dataset.lesson || '')) delete all[k]; });
+    localStorage.setItem('jic::ans', JSON.stringify(all));
+  }catch(e){}
+  window.__skipUnload = true;
+  location.reload();
 }
 function savePDF(){
   saveNotes();
@@ -1392,27 +1396,6 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
-/* ===================== COPY TO CLASS NOTES ===================== */
-function abToNotes(btn){
-  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
-  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
-  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
-  ab.querySelectorAll('.ab-step').forEach(function(st){
-    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
-    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
-  });
-  var msg=btn.parentNode.querySelector('.ab-copied');
-  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
-  saveNotes();
-  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
-  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
-  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
-  notesData[current]=wrap.innerHTML;
-  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
-  loadNotes(current);
-  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
-}
-
 SIM["sim-6"]={"who": "Mr. Fontaine", "turns": [{"q": "Tell me about a time you disagreed with a colleague.", "opts": [{"t": "It happens all the time. People are difficult.", "s": 0, "fb": "Negative about other people."}, {"t": "Last year a colleague and I disagreed about a deadline, so I suggested a short meeting to find a plan.", "s": 3, "fb": "Calm, specific, solution focused."}, {"t": "I always agree with everyone.", "s": 1, "fb": "Not realistic."}]}, {"q": "How did you handle it?", "opts": [{"t": "I listened first, then explained my concerns and we split the tasks.", "s": 3, "fb": "Clear steps and a result."}, {"t": "I told my manager to fix it.", "s": 1, "fb": "Show what YOU did."}, {"t": "I ignored it.", "s": 0, "fb": "Avoiding the problem is a red flag."}]}, {"q": "Tell me about a big change at work.", "opts": [{"t": "When our team merged with another one, I learned the new tools in two weeks and helped others.", "s": 3, "fb": "Positive and proactive."}, {"t": "I hate change.", "s": 0, "fb": "Not a good attitude."}, {"t": "It was fine.", "s": 1, "fb": "Add detail."}]}], "verdicts": [[0.8, "⭐ Excellent! Calm, diplomatic and clear."], [0.5, "👍 Good, but add more detail."], [0, "🔄 Try again: stay positive and show your actions."]]};
 RL["rl-6"]=[["Tell me about a conflict with a coworker.", "We disagreed about… I suggested… In the end…"], ["Describe a time you dealt with a difficult customer.", "The customer was understandably… so I…"], ["Tell me about a big change you handled.", "When… changed, I…"], ["Describe a time you received tough feedback.", "My manager told me… I decided to…"], ["Tell me about a time you helped someone who was struggling.", "A colleague was…, so I…"]];
 
@@ -1455,7 +1438,7 @@ function printAll(){
     if (t) setTimeout(function(){ notesUnsaved = false; }, 300);
   });
   window.addEventListener('beforeunload', function(e){
-    if (notesUnsaved) { e.preventDefault(); e.returnValue = ''; return ''; }
+    if (notesUnsaved && !window.__skipUnload) { e.preventDefault(); e.returnValue = ''; return ''; }
   });
   var bar = document.getElementById('progBar'); var all = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   function upd(){ var i = all.findIndex(function(x){ return x.classList.contains('active'); }); if (i < 0) return; bar.style.width = ((i+1)/all.length*100) + '%'; }
@@ -1473,7 +1456,14 @@ loadNotes(0);
 function savePDF(){
   saveNotes();
   var hasNotes = Object.keys(notesData).some(function(k){ return notesData[k] && notesData[k].replace(/<[^>]*>/g,'').trim(); });
-  if (!hasNotes){ alert('No notes to save yet!'); return; }
+  var esc=function(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; };
+  var answers='';
+  document.querySelectorAll('.ab').forEach(function(ab){
+    var rows='';
+    ab.querySelectorAll('.ab-step').forEach(function(st){ var v=st.querySelector('.ab-in').value.trim(); if(v) rows+='<p style="margin:4px 0"><b>'+esc(st.querySelector('.ab-lab').textContent)+':</b> '+esc(v)+'</p>'; });
+    if(rows) answers+='<div class="card"><div class="card-header">&#9997;&#65039; '+esc(ab.dataset.title)+'</div><div class="card-body">'+rows+'</div></div>';
+  });
+  if (!hasNotes && !answers){ alert('No notes or answers to save yet!'); return; }
   var LESSON = 'https://teacher-nanda.github.io/English-for-Job-Interview/L6/index.html', HW = LESSON + '#homework';
   var win = window.open('', '_blank');
   var cards = '';
@@ -1521,7 +1511,7 @@ function savePDF(){
     '<h1>'+document.title.replace(/^Lesson \d+\s*[—\-]\s*/,'')+'</h1><p class="dt">📅 '+today+'</p>'+
     '<div class="row"><p>Below are the notes from our class. Click the button to open the lesson material and the homework.</p>'+
     '<a class="bigbtn lesson" href="'+LESSON+'" target="_blank">▶ Open the lesson</a></div></div><!--hero-v3-->'+
-    '<h2 class="notes-title">📝 Notes from class</h2>'+cards+'</body></html>';
+    (answers?'<h2 class="notes-title">📓 My Interview Notebook</h2>'+answers:'')+(cards?'<h2 class="notes-title">📝 Notes from class</h2>'+cards:'')+'</body></html>';
   win.document.write(html);
   win.document.close();
   setTimeout(function(){ win.print(); }, 700);

@@ -90,11 +90,16 @@ function notesHilite(color){
 function saveNotes(){ notesData[current] = document.getElementById('notesTA').innerHTML; }
 function loadNotes(idx){ document.getElementById('notesTA').innerHTML = notesData[idx] || ''; }
 function clearAllNotes(){
-  if(!confirm('Delete all notes for this lesson? This cannot be undone.')) return;
-  Object.keys(notesData).forEach(function(k){ delete notesData[k]; });
-  var ta = document.getElementById('notesTA');
-  if (ta) ta.innerHTML = '';
-  try{ if (typeof notesStoreKey !== 'undefined') localStorage.removeItem(notesStoreKey); }catch(e){}
+  if(!confirm('Clear everything in this lesson? This deletes your notes AND all your answers (Answer Builders and Interview Notebook entries for this lesson). This cannot be undone.')) return;
+  try{
+    if (typeof notesStoreKey !== 'undefined') localStorage.removeItem(notesStoreKey);
+    document.querySelectorAll('.ab').forEach(function(ab){ localStorage.removeItem('jic::in::' + ab.dataset.key); });
+    var all = JSON.parse(localStorage.getItem('jic::ans')) || {};
+    Object.keys(all).forEach(function(k){ if (all[k].lesson === (document.body.dataset.lesson || '')) delete all[k]; });
+    localStorage.setItem('jic::ans', JSON.stringify(all));
+  }catch(e){}
+  window.__skipUnload = true;
+  location.reload();
 }
 function savePDF(){
   saveNotes();

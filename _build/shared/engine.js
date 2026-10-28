@@ -301,24 +301,3 @@ function ehCheck(id){
 function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(function(it){ it.classList.remove('ok','bad','empty-warn'); delete it.dataset.pick; it.querySelectorAll('.eh-w').forEach(function(x){x.classList.remove('sel');}); it.querySelector('.eh-in').value=''; }); }
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
-
-/* ===================== COPY TO CLASS NOTES ===================== */
-function abToNotes(btn){
-  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
-  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
-  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
-  ab.querySelectorAll('.ab-step').forEach(function(st){
-    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
-    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
-  });
-  var msg=btn.parentNode.querySelector('.ab-copied');
-  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
-  saveNotes();
-  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
-  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
-  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
-  notesData[current]=wrap.innerHTML;
-  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
-  loadNotes(current);
-  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
-}

@@ -111,7 +111,7 @@ def ab(key, title, steps, order):
     s=''
     for lab,hint,frame in steps:
         s += '<div class="ab-step"><div class="ab-lab">%s</div><div class="ab-hint">%s</div>%s<textarea class="ab-in" rows="2" aria-label="%s"></textarea></div>' % (lab, hint, sup('<span class="ab-sup">%s</span>' % frame) if frame else '', q(lab))
-    return ('<div class="ab" data-key="%s" data-title="%s" data-order="%s">%s<div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>' % (key, q(title), order, s))
+    return ('<div class="ab" data-key="%s" data-title="%s" data-order="%s">%s<div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>' % (key, q(title), order, s))
 
 def cover(L, chips, tagline):
     ch=''.join('<div class="cv-chip" style="%s">%s</div>' % (st, e) for e,st in chips)

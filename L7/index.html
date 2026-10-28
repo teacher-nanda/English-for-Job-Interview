@@ -622,7 +622,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#3A2A20;}
   <div class="banner banner-speaking">🎤 Speaking</div>
   <div class="slide-main"><div class="content">
     <h2>Explain a gap or a change</h2>
-<p class="inst-light">Choose a real career change, short job, or gap.</p><div class="ab" data-key="L7-cv" data-title="A career question" data-order="L7-a"><div class="ab-step"><div class="ab-lab">1 · The fact</div><div class="ab-hint">What happened, in one calm sentence?</div><div class="sup"><span class="ab-sup">Frame: In 20…, I decided to…</span></div><textarea class="ab-in" rows="2" aria-label="1 · The fact"></textarea></div><div class="ab-step"><div class="ab-lab">2 · The reason</div><div class="ab-hint">Give a positive reason.</div><div class="sup"><span class="ab-sup">Frame: I wanted to…</span></div><textarea class="ab-in" rows="2" aria-label="2 · The reason"></textarea></div><div class="ab-step"><div class="ab-lab">3 · What I gained</div><div class="ab-hint">What did you learn or achieve?</div><div class="sup"><span class="ab-sup">Frame: During that time, I…</span></div><textarea class="ab-in" rows="2" aria-label="3 · What I gained"></textarea></div><div class="ab-step"><div class="ab-lab">4 · The link</div><div class="ab-hint">How does it help this job?</div><div class="sup"><span class="ab-sup">Frame: That experience helps me because…</span></div><textarea class="ab-in" rows="2" aria-label="4 · The link"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
+<p class="inst-light">Choose a real career change, short job, or gap.</p><div class="ab" data-key="L7-cv" data-title="A career question" data-order="L7-a"><div class="ab-step"><div class="ab-lab">1 · The fact</div><div class="ab-hint">What happened, in one calm sentence?</div><div class="sup"><span class="ab-sup">Frame: In 20…, I decided to…</span></div><textarea class="ab-in" rows="2" aria-label="1 · The fact"></textarea></div><div class="ab-step"><div class="ab-lab">2 · The reason</div><div class="ab-hint">Give a positive reason.</div><div class="sup"><span class="ab-sup">Frame: I wanted to…</span></div><textarea class="ab-in" rows="2" aria-label="2 · The reason"></textarea></div><div class="ab-step"><div class="ab-lab">3 · What I gained</div><div class="ab-hint">What did you learn or achieve?</div><div class="sup"><span class="ab-sup">Frame: During that time, I…</span></div><textarea class="ab-in" rows="2" aria-label="3 · What I gained"></textarea></div><div class="ab-step"><div class="ab-lab">4 · The link</div><div class="ab-hint">How does it help this job?</div><div class="sup"><span class="ab-sup">Frame: That experience helps me because…</span></div><textarea class="ab-in" rows="2" aria-label="4 · The link"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -667,9 +667,8 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#3A2A20;}
   <div id="counter">1/1</div>
   <button id="nextBtn" onclick="goTo(current+1)">Next ▶</button>
   <button id="dlNotesBtn" onclick="savePDF()" style="margin-left:10px;padding:5px 12px;background:#2E2A6B;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">💾 Save Notes</button>
-  <button onclick="this.blur();printAll()" style="margin-left:6px;padding:5px 12px;background:#0E5A8A;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">🖨️ Print Lesson</button>
   <button onclick="openNotebook()" style="margin-left:6px;padding:5px 12px;background:#1F7A5A;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">📓 Notebook</button>
-  <button onclick="this.blur();clearAllNotes()" title="Delete all notes and start a new lesson" style="margin-left:6px;padding:5px 12px;background:#8B2E2E;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">🗑️ Clear Notes</button>
+  <button onclick="this.blur();clearAllNotes()" title="Clear the notes and everything you filled in, to start fresh" style="margin-left:6px;padding:5px 12px;background:#8B2E2E;color:#fff;border:none;border-radius:7px;font-size:.82rem;cursor:pointer;font-family:inherit;">🗑️ Clear All</button>
 </div>
 
 <script>
@@ -813,11 +812,16 @@ function notesHilite(color){
 function saveNotes(){ notesData[current] = document.getElementById('notesTA').innerHTML; try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){} }
 function loadNotes(idx){ document.getElementById('notesTA').innerHTML = notesData[idx] || ''; }
 function clearAllNotes(){
-  if(!confirm('Delete all notes for this lesson? This cannot be undone.')) return;
-  Object.keys(notesData).forEach(function(k){ delete notesData[k]; });
-  var ta = document.getElementById('notesTA');
-  if (ta) ta.innerHTML = '';
-  try{ if (typeof notesStoreKey !== 'undefined') localStorage.removeItem(notesStoreKey); }catch(e){}
+  if(!confirm('Clear everything in this lesson? This deletes your notes AND all your answers (Answer Builders and Interview Notebook entries for this lesson). This cannot be undone.')) return;
+  try{
+    if (typeof notesStoreKey !== 'undefined') localStorage.removeItem(notesStoreKey);
+    document.querySelectorAll('.ab').forEach(function(ab){ localStorage.removeItem('jic::in::' + ab.dataset.key); });
+    var all = JSON.parse(localStorage.getItem('jic::ans')) || {};
+    Object.keys(all).forEach(function(k){ if (all[k].lesson === (document.body.dataset.lesson || '')) delete all[k]; });
+    localStorage.setItem('jic::ans', JSON.stringify(all));
+  }catch(e){}
+  window.__skipUnload = true;
+  location.reload();
 }
 function savePDF(){
   saveNotes();
@@ -1400,27 +1404,6 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
-/* ===================== COPY TO CLASS NOTES ===================== */
-function abToNotes(btn){
-  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
-  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
-  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
-  ab.querySelectorAll('.ab-step').forEach(function(st){
-    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
-    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
-  });
-  var msg=btn.parentNode.querySelector('.ab-copied');
-  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
-  saveNotes();
-  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
-  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
-  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
-  notesData[current]=wrap.innerHTML;
-  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
-  loadNotes(current);
-  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
-}
-
 SIM["sim-7"]={"who": "Ms. Albright", "turns": [{"q": "I see a gap on your CV between 2020 and 2021. Can you tell me about it?", "opts": [{"t": "I don’t want to talk about it.", "s": 0, "fb": "Avoiding the question hurts trust."}, {"t": "I took a year to care for a family member, and I also completed an online course in project management.", "s": 3, "fb": "Honest, short, and shows growth."}, {"t": "I was just relaxing.", "s": 1, "fb": "Honest but not helpful."}]}, {"q": "You changed careers in 2022. Why?", "opts": [{"t": "I wanted to use my communication skills in a more creative area.", "s": 3, "fb": "Positive reason, clear link."}, {"t": "I hated my old job.", "s": 0, "fb": "Negative."}, {"t": "A friend told me to.", "s": 1, "fb": "Not convincing."}]}, {"q": "Which line on your CV are you proudest of?", "opts": [{"t": "Leading the migration to a new system. It finished a week early and under budget.", "s": 3, "fb": "Specific and proud."}, {"t": "All of it is okay.", "s": 1, "fb": "Choose one."}, {"t": "Nothing really.", "s": 0, "fb": "Never say this."}]}], "verdicts": [[0.8, "⭐ Excellent! You own your CV."], [0.5, "👍 Good, but add more positive detail."], [0, "🔄 Try again: be honest, positive and specific."]]};
 RL["rl-7"]=[["Walk me through your CV.", "I studied… Then I worked… Now I…"], ["Why did you leave your last job?", "I left because I wanted…"], ["Which skill on your CV is the strongest?", "My strongest skill is… For example…"], ["Why did you choose your field of study?", "I chose it because…"], ["What is missing from your CV that you would like to add?", "I’d like to add… because…"]];
 
@@ -1463,7 +1446,7 @@ function printAll(){
     if (t) setTimeout(function(){ notesUnsaved = false; }, 300);
   });
   window.addEventListener('beforeunload', function(e){
-    if (notesUnsaved) { e.preventDefault(); e.returnValue = ''; return ''; }
+    if (notesUnsaved && !window.__skipUnload) { e.preventDefault(); e.returnValue = ''; return ''; }
   });
   var bar = document.getElementById('progBar'); var all = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   function upd(){ var i = all.findIndex(function(x){ return x.classList.contains('active'); }); if (i < 0) return; bar.style.width = ((i+1)/all.length*100) + '%'; }
@@ -1481,7 +1464,14 @@ loadNotes(0);
 function savePDF(){
   saveNotes();
   var hasNotes = Object.keys(notesData).some(function(k){ return notesData[k] && notesData[k].replace(/<[^>]*>/g,'').trim(); });
-  if (!hasNotes){ alert('No notes to save yet!'); return; }
+  var esc=function(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; };
+  var answers='';
+  document.querySelectorAll('.ab').forEach(function(ab){
+    var rows='';
+    ab.querySelectorAll('.ab-step').forEach(function(st){ var v=st.querySelector('.ab-in').value.trim(); if(v) rows+='<p style="margin:4px 0"><b>'+esc(st.querySelector('.ab-lab').textContent)+':</b> '+esc(v)+'</p>'; });
+    if(rows) answers+='<div class="card"><div class="card-header">&#9997;&#65039; '+esc(ab.dataset.title)+'</div><div class="card-body">'+rows+'</div></div>';
+  });
+  if (!hasNotes && !answers){ alert('No notes or answers to save yet!'); return; }
   var LESSON = 'https://teacher-nanda.github.io/English-for-Job-Interview/L7/index.html', HW = LESSON + '#homework';
   var win = window.open('', '_blank');
   var cards = '';
@@ -1529,7 +1519,7 @@ function savePDF(){
     '<h1>'+document.title.replace(/^Lesson \d+\s*[—\-]\s*/,'')+'</h1><p class="dt">📅 '+today+'</p>'+
     '<div class="row"><p>Below are the notes from our class. Click the button to open the lesson material and the homework.</p>'+
     '<a class="bigbtn lesson" href="'+LESSON+'" target="_blank">▶ Open the lesson</a></div></div><!--hero-v3-->'+
-    '<h2 class="notes-title">📝 Notes from class</h2>'+cards+'</body></html>';
+    (answers?'<h2 class="notes-title">📓 My Interview Notebook</h2>'+answers:'')+(cards?'<h2 class="notes-title">📝 Notes from class</h2>'+cards:'')+'</body></html>';
   win.document.write(html);
   win.document.close();
   setTimeout(function(){ win.print(); }, 700);

@@ -37,7 +37,7 @@ function printAll(){
     if (t) setTimeout(function(){ notesUnsaved = false; }, 300);
   });
   window.addEventListener('beforeunload', function(e){
-    if (notesUnsaved) { e.preventDefault(); e.returnValue = ''; return ''; }
+    if (notesUnsaved && !window.__skipUnload) { e.preventDefault(); e.returnValue = ''; return ''; }
   });
   var bar = document.getElementById('progBar'); var all = Array.prototype.slice.call(document.querySelectorAll('.slide'));
   function upd(){ var i = all.findIndex(function(x){ return x.classList.contains('active'); }); if (i < 0) return; bar.style.width = ((i+1)/all.length*100) + '%'; }
@@ -55,7 +55,14 @@ loadNotes(0);
 function savePDF(){
   saveNotes();
   var hasNotes = Object.keys(notesData).some(function(k){ return notesData[k] && notesData[k].replace(/<[^>]*>/g,'').trim(); });
-  if (!hasNotes){ alert('No notes to save yet!'); return; }
+  var esc=function(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; };
+  var answers='';
+  document.querySelectorAll('.ab').forEach(function(ab){
+    var rows='';
+    ab.querySelectorAll('.ab-step').forEach(function(st){ var v=st.querySelector('.ab-in').value.trim(); if(v) rows+='<p style="margin:4px 0"><b>'+esc(st.querySelector('.ab-lab').textContent)+':</b> '+esc(v)+'</p>'; });
+    if(rows) answers+='<div class="card"><div class="card-header">&#9997;&#65039; '+esc(ab.dataset.title)+'</div><div class="card-body">'+rows+'</div></div>';
+  });
+  if (!hasNotes && !answers){ alert('No notes or answers to save yet!'); return; }
   var LESSON = '__URL__', HW = LESSON + '#homework';
   var win = window.open('', '_blank');
   var cards = '';
@@ -103,7 +110,7 @@ function savePDF(){
     '<h1>'+document.title.replace(/^Lesson \d+\s*[—\-]\s*/,'')+'</h1><p class="dt">📅 '+today+'</p>'+
     '<div class="row"><p>Below are the notes from our class. Click the button to open the lesson material and the homework.</p>'+
     '<a class="bigbtn lesson" href="'+LESSON+'" target="_blank">▶ Open the lesson</a></div></div><!--hero-v3-->'+
-    '<h2 class="notes-title">📝 Notes from class</h2>'+cards+'</body></html>';
+    (answers?'<h2 class="notes-title">📓 My Interview Notebook</h2>'+answers:'')+(cards?'<h2 class="notes-title">📝 Notes from class</h2>'+cards:'')+'</body></html>';
   win.document.write(html);
   win.document.close();
   setTimeout(function(){ win.print(); }, 700);

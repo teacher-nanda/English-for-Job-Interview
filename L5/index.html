@@ -496,6 +496,9 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 
 .rf-track{display:none!important}
 
+.ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
+.btn-row{flex-wrap:wrap}
+
 :root{--c1:#16226B;--c2:#5B6CFF;--c3:#EAEDFF;--c4:#FFD84D;--ink:#16226B;--fh:'Poppins';--pattern:radial-gradient(rgba(91,108,255,.18) 2px,transparent 2.5px), radial-gradient(rgba(255,216,77,.20) 1.5px,transparent 2px);--patsize:60px 60px, 90px 90px;}
 body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#16226B;}
 #s1,#hw-cover{background:radial-gradient(circle at 80% 10%, #3B4BC4 0%, #16226B 50%, #070B2B 100%);align-items:center;justify-content:center;}
@@ -619,7 +622,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#16226B;}
   <div class="banner banner-speaking">🎤 Speaking</div>
   <div class="slide-main"><div class="content">
     <h2>Build your own STAR story</h2>
-<p class="inst-light">Choose a real story from your story bank.</p><div class="ab" data-key="L5-star" data-title="My STAR story" data-order="L5-a"><div class="ab-step"><div class="ab-lab">S · Situation</div><div class="ab-hint">Where and when?</div><div class="sup"><span class="ab-sup">Frame: Last… at my job, …</span></div><textarea class="ab-in" rows="2" aria-label="S · Situation"></textarea></div><div class="ab-step"><div class="ab-lab">T · Task</div><div class="ab-hint">What was your responsibility?</div><div class="sup"><span class="ab-sup">Frame: I had to… / My job was to…</span></div><textarea class="ab-in" rows="2" aria-label="T · Task"></textarea></div><div class="ab-step"><div class="ab-lab">A · Action</div><div class="ab-hint">What did YOU do? (2–3 steps)</div><div class="sup"><span class="ab-sup">Frame: First, I… Then I… After that, I…</span></div><textarea class="ab-in" rows="2" aria-label="A · Action"></textarea></div><div class="ab-step"><div class="ab-lab">R · Result</div><div class="ab-hint">What happened? Add a number if you can.</div><div class="sup"><span class="ab-sup">Frame: As a result, we… I learned that…</span></div><textarea class="ab-in" rows="2" aria-label="R · Result"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
+<p class="inst-light">Choose a real story from your story bank.</p><div class="ab" data-key="L5-star" data-title="My STAR story" data-order="L5-a"><div class="ab-step"><div class="ab-lab">S · Situation</div><div class="ab-hint">Where and when?</div><div class="sup"><span class="ab-sup">Frame: Last… at my job, …</span></div><textarea class="ab-in" rows="2" aria-label="S · Situation"></textarea></div><div class="ab-step"><div class="ab-lab">T · Task</div><div class="ab-hint">What was your responsibility?</div><div class="sup"><span class="ab-sup">Frame: I had to… / My job was to…</span></div><textarea class="ab-in" rows="2" aria-label="T · Task"></textarea></div><div class="ab-step"><div class="ab-lab">A · Action</div><div class="ab-hint">What did YOU do? (2–3 steps)</div><div class="sup"><span class="ab-sup">Frame: First, I… Then I… After that, I…</span></div><textarea class="ab-in" rows="2" aria-label="A · Action"></textarea></div><div class="ab-step"><div class="ab-lab">R · Result</div><div class="ab-hint">What happened? Add a number if you can.</div><div class="sup"><span class="ab-sup">Frame: As a result, we… I learned that…</span></div><textarea class="ab-in" rows="2" aria-label="R · Result"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -840,7 +843,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-        '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
+    '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
   '</style></head><body>'+
   '<div class="header"><h1>AEF4 4B – A Risky Business</h1><div class="lesson-link">📝 Here you can see our Notes from Class.</div><div class="lesson-link" style="margin-top:4px;">You can also access <a href="https://teacher-nanda.github.io/AEF-Courses/AEF4-4B/index.html" target="_blank">this link</a> to review the lesson material and do your optional Homework activities.</div></div>'+
   '<p class="date">'+new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</p>'+
@@ -1397,6 +1400,27 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
+/* ===================== COPY TO CLASS NOTES ===================== */
+function abToNotes(btn){
+  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
+  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
+  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
+  ab.querySelectorAll('.ab-step').forEach(function(st){
+    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
+    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
+  });
+  var msg=btn.parentNode.querySelector('.ab-copied');
+  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
+  saveNotes();
+  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
+  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
+  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
+  notesData[current]=wrap.innerHTML;
+  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
+  loadNotes(current);
+  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
+}
+
 SIM["sim-5"]={"who": "Ms. Tanaka", "turns": [{"q": "Tell me about a time you worked under pressure.", "opts": [{"t": "Once I had a lot of work and I did it all.", "s": 1, "fb": "No details. Which situation?"}, {"t": "Last June, our manager left suddenly the week before a launch, and I had to run the final checks.", "s": 3, "fb": "Clear situation and task."}, {"t": "I never feel pressure.", "s": 0, "fb": "Not believable."}]}, {"q": "What did you do?", "opts": [{"t": "First I listed all urgent tasks. Then I split them with two colleagues and checked each one twice.", "s": 3, "fb": "Clear actions in order."}, {"t": "We worked hard.", "s": 1, "fb": "Too vague."}, {"t": "I told the others what to do.", "s": 1, "fb": "More detail needed."}]}, {"q": "How did it end?", "opts": [{"t": "The launch happened on time, with no errors, and I was asked to lead the next one.", "s": 3, "fb": "Positive, specific result."}, {"t": "It was fine.", "s": 1, "fb": "Not strong enough."}, {"t": "I don’t remember.", "s": 0, "fb": "You need to remember your examples."}]}], "verdicts": [[0.8, "⭐ Excellent STAR story!"], [0.5, "👍 Good, add more specific details."], [0, "🔄 Try again: situation, task, action, result."]]};
 RL["rl-5"]=[["Tell me about a time you solved a problem.", "Situation: … Task: … Action: … Result: …"], ["Describe a time you helped a colleague.", "Last year, my colleague… I…"], ["Tell me about a time you learned from a mistake.", "I once… so I… Now I…"], ["Give an example of working under pressure.", "The deadline was… I had to…"], ["Tell me about a time you disagreed with someone.", "We disagreed about… I…"]];
 
@@ -1492,7 +1516,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-    '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
+        '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
     '.hero .kicker{font-size:.75rem;margin:0 0 3px}.hero h1{font-family:Georgia,serif;font-size:1.85rem;margin:0 0 3px;line-height:1.15}.hero .dt{margin:0 0 9px;font-size:.98rem;color:#FFD84D;font-weight:700}'+
     '.hero .row{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero .row p{margin:0;font-size:1.02rem;line-height:1.45}'+
     '.hero .bigbtn.lesson{flex:none;background:#FFD84D;color:#2B1B5E!important;border:0;box-shadow:none;font-size:1.02rem;padding:9px 18px;white-space:nowrap}.notes-title{margin-top:16px}'+

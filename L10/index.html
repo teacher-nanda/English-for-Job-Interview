@@ -496,6 +496,9 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 
 .rf-track{display:none!important}
 
+.ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
+.btn-row{flex-wrap:wrap}
+
 :root{--c1:#1B1B3A;--c2:#F5B700;--c3:#FFF8DC;--c4:#FFD84D;--ink:#1B1B3A;--fh:'Poppins';--pattern:radial-gradient(rgba(245,183,0,.16) 2px,transparent 2.5px);--patsize:44px 44px;}
 body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#1B1B3A;}
 #s1,#hw-cover{background:radial-gradient(circle at 50% 15%, #4A3F9F 0%, #1B1B3A 55%, #08081A 100%);align-items:center;justify-content:center;}
@@ -595,7 +598,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#1B1B3A;}
   <div class="banner banner-review">🏁 Wrap-up</div>
   <div class="slide-main"><div class="content">
     <h2>Your scorecard</h2>
-<p class="inst-light">After the spoken mock interview, we will write feedback together.</p><div class="ab" data-key="L10-sc" data-title="Mock interview scorecard" data-order="L10-a"><div class="ab-step"><div class="ab-lab">1 · What went well</div><div class="ab-hint">Two things you did well.</div><div class="sup"><span class="ab-sup">Frame: I was good at…</span></div><textarea class="ab-in" rows="2" aria-label="1 · What went well"></textarea></div><div class="ab-step"><div class="ab-lab">2 · To improve</div><div class="ab-hint">Two things to practice.</div><div class="sup"><span class="ab-sup">Frame: Next time I will…</span></div><textarea class="ab-in" rows="2" aria-label="2 · To improve"></textarea></div><div class="ab-step"><div class="ab-lab">3 · Best answer</div><div class="ab-hint">Which answer was your best? Why?</div><div class="sup"><span class="ab-sup">Frame: My best answer was… because…</span></div><textarea class="ab-in" rows="2" aria-label="3 · Best answer"></textarea></div><div class="ab-step"><div class="ab-lab">4 · My action plan</div><div class="ab-hint">What will you do before the real interview?</div><div class="sup"><span class="ab-sup">Frame: Before my interview, I will…</span></div><textarea class="ab-in" rows="2" aria-label="4 · My action plan"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
+<p class="inst-light">After the spoken mock interview, we will write feedback together.</p><div class="ab" data-key="L10-sc" data-title="Mock interview scorecard" data-order="L10-a"><div class="ab-step"><div class="ab-lab">1 · What went well</div><div class="ab-hint">Two things you did well.</div><div class="sup"><span class="ab-sup">Frame: I was good at…</span></div><textarea class="ab-in" rows="2" aria-label="1 · What went well"></textarea></div><div class="ab-step"><div class="ab-lab">2 · To improve</div><div class="ab-hint">Two things to practice.</div><div class="sup"><span class="ab-sup">Frame: Next time I will…</span></div><textarea class="ab-in" rows="2" aria-label="2 · To improve"></textarea></div><div class="ab-step"><div class="ab-lab">3 · Best answer</div><div class="ab-hint">Which answer was your best? Why?</div><div class="sup"><span class="ab-sup">Frame: My best answer was… because…</span></div><textarea class="ab-in" rows="2" aria-label="3 · Best answer"></textarea></div><div class="ab-step"><div class="ab-lab">4 · My action plan</div><div class="ab-hint">What will you do before the real interview?</div><div class="sup"><span class="ab-sup">Frame: Before my interview, I will…</span></div><textarea class="ab-in" rows="2" aria-label="4 · My action plan"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -808,7 +811,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-        '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
+    '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
   '</style></head><body>'+
   '<div class="header"><h1>AEF4 4B – A Risky Business</h1><div class="lesson-link">📝 Here you can see our Notes from Class.</div><div class="lesson-link" style="margin-top:4px;">You can also access <a href="https://teacher-nanda.github.io/AEF-Courses/AEF4-4B/index.html" target="_blank">this link</a> to review the lesson material and do your optional Homework activities.</div></div>'+
   '<p class="date">'+new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</p>'+
@@ -1365,6 +1368,27 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
+/* ===================== COPY TO CLASS NOTES ===================== */
+function abToNotes(btn){
+  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
+  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
+  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
+  ab.querySelectorAll('.ab-step').forEach(function(st){
+    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
+    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
+  });
+  var msg=btn.parentNode.querySelector('.ab-copied');
+  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
+  saveNotes();
+  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
+  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
+  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
+  notesData[current]=wrap.innerHTML;
+  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
+  loadNotes(current);
+  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
+}
+
 RF["rf-rec"]={"sec": 12, "items": [{"q": "Which order works best for “Tell me about yourself”?", "o": ["Past, present, future", "Future, past, present", "Present, past, future"], "a": 2}, {"q": "What does the S in STAR mean?", "o": ["Skill", "Success", "Situation"], "a": 2}, {"q": "Which is a stronger CV line?", "o": ["Responsible for sales.", "Helped with sales.", "Increased sales by 20% in one year."], "a": 2}, {"q": "Which weakness answer is best?", "o": ["I work too hard.", "I used to avoid speaking, so I joined a club.", "I have none."], "a": 1}, {"q": "Which sentence is diplomatic?", "o": ["We had different working styles.", "He was useless.", "He was lazy."], "a": 0}, {"q": "Which is a smart question for the interviewer?", "o": ["How will success be measured?", "What does your company do?", "How early can I leave?"], "a": 0}, {"q": "“I’ve worked here ___ 2019.”", "o": ["for", "since", "ago"], "a": 1}, {"q": "What should you do if you do not understand a question?", "o": ["Ask politely for clarification", "Stay silent", "Guess"], "a": 0}]};
 SIM["sim-10"]={"who": "Mr. Hartley", "turns": [{"q": "Good morning, and thank you for coming. Please tell me about yourself.", "opts": [{"t": "I’m a coordinator in logistics. Before that I studied business, and now I’m looking for more responsibility.", "s": 3, "fb": "Present, past and future."}, {"t": "I was born in 1991 and I like football.", "s": 0, "fb": "Not relevant."}, {"t": "What do you want to know?", "s": 1, "fb": "Take the lead."}]}, {"q": "Why do you want to work here?", "opts": [{"t": "I admire your focus on customer service, and my experience matches the role.", "s": 3, "fb": "Company and you."}, {"t": "You are close to home.", "s": 0, "fb": "Not motivating."}, {"t": "I need a change.", "s": 1, "fb": "Too vague."}]}, {"q": "What is your greatest strength?", "opts": [{"t": "I’m resourceful. When a supplier closed, I found a new one within two days.", "s": 3, "fb": "Claim plus proof."}, {"t": "I’m perfect.", "s": 0, "fb": "Unbelievable."}, {"t": "I’m hard-working.", "s": 1, "fb": "Everyone says this."}]}, {"q": "And your greatest weakness?", "opts": [{"t": "I used to say yes to everything. Now I plan my week and discuss priorities.", "s": 3, "fb": "Real, with action."}, {"t": "I don’t have any.", "s": 0, "fb": "Not honest."}, {"t": "I’m too nice.", "s": 1, "fb": "A common cliche."}]}, {"q": "Tell me about a time you handled a disagreement.", "opts": [{"t": "A colleague and I disagreed about deadlines. I listened, suggested a shared plan, and we finished on time.", "s": 3, "fb": "STAR, diplomatic."}, {"t": "I avoid conflict.", "s": 1, "fb": "Not an answer."}, {"t": "My coworker was impossible.", "s": 0, "fb": "Blaming."}]}, {"q": "Do you have any questions for us?", "opts": [{"t": "Yes. What are the biggest challenges for the team this year?", "s": 3, "fb": "Smart."}, {"t": "No.", "s": 1, "fb": "Missed chance."}, {"t": "How soon can I get a raise?", "s": 0, "fb": "Too early."}]}], "verdicts": [[0.8, "🏆 Outstanding! You are ready for the real thing."], [0.5, "👍 Very good. Review the lessons where you lost points."], [0, "🔄 Try again, and use your notebook."]]};
 RL["rl-10"]=[["Tell me about yourself.", "Present → past → future."], ["Why do you want this job?", "Company + role + you."], ["What are your strengths and weaknesses?", "Claim + proof; weakness + action."], ["Tell me about your biggest achievement.", "Situation, task, action, result with numbers."], ["Tell me about a conflict or a difficult change.", "Stay diplomatic."], ["What do you know about our company?", "I read that… I admire…"], ["Why are you leaving your current job?", "Stay positive."], ["Do you have any questions for us?", "How will success be measured…?"]];
@@ -1461,7 +1485,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-    '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
+        '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
     '.hero .kicker{font-size:.75rem;margin:0 0 3px}.hero h1{font-family:Georgia,serif;font-size:1.85rem;margin:0 0 3px;line-height:1.15}.hero .dt{margin:0 0 9px;font-size:.98rem;color:#FFD84D;font-weight:700}'+
     '.hero .row{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero .row p{margin:0;font-size:1.02rem;line-height:1.45}'+
     '.hero .bigbtn.lesson{flex:none;background:#FFD84D;color:#2B1B5E!important;border:0;box-shadow:none;font-size:1.02rem;padding:9px 18px;white-space:nowrap}.notes-title{margin-top:16px}'+

@@ -496,6 +496,9 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 
 .rf-track{display:none!important}
 
+.ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
+.btn-row{flex-wrap:wrap}
+
 :root{--c1:#0B5D45;--c2:#C9A227;--c3:#FFF8E1;--c4:#FFE680;--ink:#0B5D45;--fh:'Playfair Display';--pattern:linear-gradient(45deg, rgba(201,162,39,.07) 25%, transparent 25%, transparent 75%, rgba(201,162,39,.07) 75%), linear-gradient(45deg, rgba(201,162,39,.07) 25%, transparent 25%, transparent 75%, rgba(201,162,39,.07) 75%);--patsize:40px 40px;}
 body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#0B5D45;}
 #s1,#hw-cover{background:radial-gradient(circle at 50% 15%, #1F9C73 0%, #0B5D45 50%, #052B20 100%);align-items:center;justify-content:center;}
@@ -619,7 +622,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#0B5D45;}
   <div class="banner banner-speaking">🎤 Speaking</div>
   <div class="slide-main"><div class="content">
     <h2>Build your own achievement story</h2>
-<p class="inst-light">Choose a real project or achievement.</p><div class="ab" data-key="L4-ach" data-title="My biggest achievement" data-order="L4-a"><div class="ab-step"><div class="ab-lab">1 · Background</div><div class="ab-hint">What was happening?</div><div class="sup"><span class="ab-sup">Frame: Last year, our team…</span></div><textarea class="ab-in" rows="2" aria-label="1 · Background"></textarea></div><div class="ab-step"><div class="ab-lab">2 · My role</div><div class="ab-hint">What was your job?</div><div class="sup"><span class="ab-sup">Frame: I was responsible for…</span></div><textarea class="ab-in" rows="2" aria-label="2 · My role"></textarea></div><div class="ab-step"><div class="ab-lab">3 · Actions</div><div class="ab-hint">What did you do?</div><div class="sup"><span class="ab-sup">Frame: I designed / led / organized…</span></div><textarea class="ab-in" rows="2" aria-label="3 · Actions"></textarea></div><div class="ab-step"><div class="ab-lab">4 · Result</div><div class="ab-hint">Add a number if you can.</div><div class="sup"><span class="ab-sup">Frame: As a result, we increased / reduced…</span></div><textarea class="ab-in" rows="2" aria-label="4 · Result"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
+<p class="inst-light">Choose a real project or achievement.</p><div class="ab" data-key="L4-ach" data-title="My biggest achievement" data-order="L4-a"><div class="ab-step"><div class="ab-lab">1 · Background</div><div class="ab-hint">What was happening?</div><div class="sup"><span class="ab-sup">Frame: Last year, our team…</span></div><textarea class="ab-in" rows="2" aria-label="1 · Background"></textarea></div><div class="ab-step"><div class="ab-lab">2 · My role</div><div class="ab-hint">What was your job?</div><div class="sup"><span class="ab-sup">Frame: I was responsible for…</span></div><textarea class="ab-in" rows="2" aria-label="2 · My role"></textarea></div><div class="ab-step"><div class="ab-lab">3 · Actions</div><div class="ab-hint">What did you do?</div><div class="sup"><span class="ab-sup">Frame: I designed / led / organized…</span></div><textarea class="ab-in" rows="2" aria-label="3 · Actions"></textarea></div><div class="ab-step"><div class="ab-lab">4 · Result</div><div class="ab-hint">Add a number if you can.</div><div class="sup"><span class="ab-sup">Frame: As a result, we increased / reduced…</span></div><textarea class="ab-in" rows="2" aria-label="4 · Result"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -840,7 +843,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-        '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
+    '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
   '</style></head><body>'+
   '<div class="header"><h1>AEF4 4B – A Risky Business</h1><div class="lesson-link">📝 Here you can see our Notes from Class.</div><div class="lesson-link" style="margin-top:4px;">You can also access <a href="https://teacher-nanda.github.io/AEF-Courses/AEF4-4B/index.html" target="_blank">this link</a> to review the lesson material and do your optional Homework activities.</div></div>'+
   '<p class="date">'+new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</p>'+
@@ -1397,6 +1400,27 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
+/* ===================== COPY TO CLASS NOTES ===================== */
+function abToNotes(btn){
+  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
+  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
+  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
+  ab.querySelectorAll('.ab-step').forEach(function(st){
+    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
+    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
+  });
+  var msg=btn.parentNode.querySelector('.ab-copied');
+  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
+  saveNotes();
+  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
+  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
+  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
+  notesData[current]=wrap.innerHTML;
+  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
+  loadNotes(current);
+  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
+}
+
 RF["rf-lead"]={"sec": 12, "items": [{"q": "Which is stronger?", "o": ["I was in charge of sales.", "I grew monthly sales by 18% in six months."], "a": 1}, {"q": "Which is stronger?", "o": ["I trained twelve new employees.", "I helped with training."], "a": 0}, {"q": "Which is stronger?", "o": ["I handled many customer complaints.", "I resolved about 40 customer complaints a week."], "a": 1}, {"q": "Which is stronger?", "o": ["I redesigned our website and cut loading time in half.", "I worked on a website project."], "a": 0}, {"q": "Which is stronger?", "o": ["I did some event stuff.", "I organized a conference for 300 guests."], "a": 1}]};
 SIM["sim-4"]={"who": "Mr. Duarte", "turns": [{"q": "Tell me about your most relevant experience.", "opts": [{"t": "I’ve done a lot of things in many places.", "s": 0, "fb": "Too vague."}, {"t": "For four years I’ve managed customer accounts for a software firm, with about 80 clients.", "s": 3, "fb": "Clear time, role and numbers."}, {"t": "Everything is on my CV.", "s": 1, "fb": "Do not just point to the CV."}]}, {"q": "What was your biggest achievement?", "opts": [{"t": "I helped reduce customer complaints by 35% after redesigning our help center.", "s": 3, "fb": "Specific, with a result."}, {"t": "I was employee of the month once.", "s": 1, "fb": "Nice, but tell me why."}, {"t": "I haven’t really achieved anything big.", "s": 0, "fb": "Never say this."}]}, {"q": "What was your role in that project?", "opts": [{"t": "I led it from the start, with a team of three.", "s": 3, "fb": "Clear role."}, {"t": "We all just did things together.", "s": 1, "fb": "Say what YOU did."}, {"t": "My manager did most of it.", "s": 0, "fb": "Never take credit away from yourself."}]}], "verdicts": [[0.8, "⭐ Excellent! Specific, confident, and full of results."], [0.5, "👍 Good, but add more numbers."], [0, "🔄 Try again with more detail and numbers."]]};
 RL["rl-4"]=[["What is your biggest professional achievement?", "My biggest achievement was… I…"], ["Tell me about a project you led.", "I led a project to… We…"], ["What did you do in your last job every day?", "My main responsibilities were…"], ["Which accomplishment are you most proud of?", "I’m proudest of… because…"], ["What have you learned from your experience?", "I’ve learned that… For example…"]];
@@ -1493,7 +1517,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-    '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
+        '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
     '.hero .kicker{font-size:.75rem;margin:0 0 3px}.hero h1{font-family:Georgia,serif;font-size:1.85rem;margin:0 0 3px;line-height:1.15}.hero .dt{margin:0 0 9px;font-size:.98rem;color:#FFD84D;font-weight:700}'+
     '.hero .row{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero .row p{margin:0;font-size:1.02rem;line-height:1.45}'+
     '.hero .bigbtn.lesson{flex:none;background:#FFD84D;color:#2B1B5E!important;border:0;box-shadow:none;font-size:1.02rem;padding:9px 18px;white-space:nowrap}.notes-title{margin-top:16px}'+

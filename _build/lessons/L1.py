@@ -11,21 +11,37 @@ THEME = theme('#12324A','#1B9AAA','#E6F6F8','#FFD84D',
 cover(L, [('🧪','top:10%;left:7%'),('🔬','top:14%;right:8%;animation-delay:-2s'),('⚗️','bottom:24%;left:9%;animation-delay:-4s'),('💼','bottom:26%;right:10%;animation-delay:-1s'),('🎤','top:44%;left:3%;animation-delay:-3s')],
       'Experiment, practice and get ready for the real thing.')
 
-# ---------- 2 MYTH OR FACT
-L.slide('s-myth','Lead-in – Myth or fact?','lead','Lab test: myth or fact?',
-  '<p class="instruction">Here are eight beliefs about job interviews. Which are myths and which are facts? There are 4 of each.</p>'
-  + flagsort('fs-myth',[
-     ('The interviewer wants you to fail.','a'),
-     ('It is fine to pause for a few seconds before you answer.','b'),
-     ('You should memorize your answers word for word.','a'),
-     ('It is normal to ask the interviewer questions.','b'),
-     ('The longer your answer, the better.','a'),
-     ('A specific example is stronger than a general statement.','b'),
-     ('If you feel nervous, you will fail.','a'),
-     ('Interviewers are people, too, and they want to find a good match.','b')],
-     ('m','🙅 Myth'),('f','✅ Fact'))
-  + sup('<b>myth</b> = something many people believe, but it is not true · <b>fact</b> = something true · <b>memorize</b> = learn by heart')
-  + chal('Pick the myth that worries you most. Tell me where you heard it, and what you will do instead.'))
+# ---------- 2 FIRST FIVE MINUTES (scenarios)
+L.slide('s-first','Lead-in – First five minutes','lead','Lab test: survive the first five minutes',
+  '<p class="instruction">The interview starts before the first question! Choose what you would do in each moment. Then compare with the lab results.</p>'
+  '<div class="twocol"><div>'
+  + branch('🕘 <b>Moment 1.</b> You arrive 20 minutes early. The receptionist says, “Please take a seat. Someone will be with you soon.”',[
+     ('Review my notes quietly and read the company brochure on the table.','good','Perfect. You stay calm and you learn something about the company.'),
+     ('Call a friend to say I am nervous.','bad','A loud phone call in the waiting room? The receptionist notices everything.'),
+     ('Scroll on my phone and eat a snack.','ok','Not terrible, but this is a missed chance to prepare and look interested.')])
+  + '</div><div>'
+  + branch('🤝 <b>Moment 2.</b> The interviewer shakes your hand and asks, “How are you today?”',[
+     ('“Fine.”','ok','Correct but cold. A friendly answer sets the mood.'),
+     ('“Very well, thank you. It’s a pleasure to meet you.”','good','Warm, polite and confident. A great start.'),
+     ('“Honestly, I’m terrified and my bus was late.”','bad','Too much information. Keep the first minute positive.')])
+  + '</div></div>'
+  + sup('<b>brochure</b> = a small printed paper about a company · <b>terrified</b> = very afraid · <b>notice</b> = see and remember')
+  + chal('Which moment makes you most nervous in real life? Tell me why, and what you will do.'))
+
+L.slide('s-first2','Lead-in – Surprises','lead','Lab test: surprises in the room',
+  '<p class="instruction">Interviews always bring surprises. Choose your best reaction.</p>'
+  '<div class="twocol"><div>'
+  + branch('❓ <b>Moment 3.</b> You do not understand the question.',[
+     ('Guess and talk anyway.','bad','You may answer a different question. Never guess.'),
+     ('“Could you rephrase that, please?”','good','Perfect. Interviewers respect people who ask politely.'),
+     ('Stay silent and look at the table.','bad','Silence for too long feels uncomfortable for everyone.')])
+  + '</div><div>'
+  + branch('🙈 <b>Moment 4.</b> In the middle of your answer, you say a sentence with a grammar mistake.',[
+     ('Stop, apologize three times and start again.','bad','Too much. This hurts your confidence more than the mistake.'),
+     ('Correct it quickly if you notice, and continue smoothly.','good','Natural and calm. Even native speakers do this.'),
+     ('Ignore it and keep going.','ok','Fine for small mistakes. Fix it if it changes the meaning.')])
+  + '</div></div>'
+  + sup('<b>rephrase</b> = say again with different words · <b>respect</b> = admire and value · <b>smoothly</b> = without stopping or problems'))
 
 # ---------- 3 STORY WEB
 L.slide('s-story','One story, many questions','read','One story, many questions',

@@ -176,3 +176,6 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 .mindbtn { background:var(--c4); color:var(--c1); border:none; border-radius:999px; padding:4px 14px; font-weight:800; font-size:.9rem; cursor:pointer; font-family:inherit; margin-bottom:6px; }
 
 .rf-track{display:none!important}
+
+.ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
+.btn-row{flex-wrap:wrap}

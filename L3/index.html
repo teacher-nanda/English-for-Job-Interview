@@ -496,6 +496,9 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 
 .rf-track{display:none!important}
 
+.ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
+.btn-row{flex-wrap:wrap}
+
 :root{--c1:#A8431A;--c2:#F28C28;--c3:#FFF1E0;--c4:#FFD166;--ink:#A8431A;--fh:'Nunito';--pattern:repeating-linear-gradient(135deg, rgba(242,140,40,.07) 0 14px, transparent 14px 28px);--patsize:auto;}
 body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#A8431A;}
 #s1,#hw-cover{background:radial-gradient(circle at 20% 80%, #F28C28 0%, #B5451B 45%, #4A1D0C 100%);align-items:center;justify-content:center;}
@@ -619,7 +622,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#A8431A;}
   <div class="banner banner-speaking">🎤 Speaking</div>
   <div class="slide-main"><div class="content">
     <h2>Build your own “Why this job?” answer</h2>
-<p class="inst-light">Use a real job ad you like.</p><div class="ab" data-key="L3-why" data-title="Why do you want this job?" data-order="L3-a"><div class="ab-step"><div class="ab-lab">1 · The company</div><div class="ab-hint">What do you admire about it?</div><div class="sup"><span class="ab-sup">Frame: I admire… because…</span></div><textarea class="ab-in" rows="2" aria-label="1 · The company"></textarea></div><div class="ab-step"><div class="ab-lab">2 · The role</div><div class="ab-hint">What attracts you to the work?</div><div class="sup"><span class="ab-sup">Frame: The role of… is perfect because…</span></div><textarea class="ab-in" rows="2" aria-label="2 · The role"></textarea></div><div class="ab-step"><div class="ab-lab">3 · Me</div><div class="ab-hint">Which skill or experience fits?</div><div class="sup"><span class="ab-sup">Frame: I have… which means I can…</span></div><textarea class="ab-in" rows="2" aria-label="3 · Me"></textarea></div><div class="ab-step"><div class="ab-lab">4 · Future</div><div class="ab-hint">Where can this job take you?</div><div class="sup"><span class="ab-sup">Frame: In the long term, I hope to…</span></div><textarea class="ab-in" rows="2" aria-label="4 · Future"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
+<p class="inst-light">Use a real job ad you like.</p><div class="ab" data-key="L3-why" data-title="Why do you want this job?" data-order="L3-a"><div class="ab-step"><div class="ab-lab">1 · The company</div><div class="ab-hint">What do you admire about it?</div><div class="sup"><span class="ab-sup">Frame: I admire… because…</span></div><textarea class="ab-in" rows="2" aria-label="1 · The company"></textarea></div><div class="ab-step"><div class="ab-lab">2 · The role</div><div class="ab-hint">What attracts you to the work?</div><div class="sup"><span class="ab-sup">Frame: The role of… is perfect because…</span></div><textarea class="ab-in" rows="2" aria-label="2 · The role"></textarea></div><div class="ab-step"><div class="ab-lab">3 · Me</div><div class="ab-hint">Which skill or experience fits?</div><div class="sup"><span class="ab-sup">Frame: I have… which means I can…</span></div><textarea class="ab-in" rows="2" aria-label="3 · Me"></textarea></div><div class="ab-step"><div class="ab-lab">4 · Future</div><div class="ab-hint">Where can this job take you?</div><div class="sup"><span class="ab-sup">Frame: In the long term, I hope to…</span></div><textarea class="ab-in" rows="2" aria-label="4 · Future"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -840,7 +843,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-        '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
+    '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
   '</style></head><body>'+
   '<div class="header"><h1>AEF4 4B – A Risky Business</h1><div class="lesson-link">📝 Here you can see our Notes from Class.</div><div class="lesson-link" style="margin-top:4px;">You can also access <a href="https://teacher-nanda.github.io/AEF-Courses/AEF4-4B/index.html" target="_blank">this link</a> to review the lesson material and do your optional Homework activities.</div></div>'+
   '<p class="date">'+new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</p>'+
@@ -1397,6 +1400,27 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
+/* ===================== COPY TO CLASS NOTES ===================== */
+function abToNotes(btn){
+  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
+  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
+  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
+  ab.querySelectorAll('.ab-step').forEach(function(st){
+    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
+    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
+  });
+  var msg=btn.parentNode.querySelector('.ab-copied');
+  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
+  saveNotes();
+  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
+  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
+  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
+  notesData[current]=wrap.innerHTML;
+  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
+  loadNotes(current);
+  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
+}
+
 RF["rf-why"]={"sec": 14, "items": [{"q": "Which is better?", "o": ["I need money.", "I’m excited by the chance to grow in a fast-moving company."], "a": 1}, {"q": "Which is better?", "o": ["Your office is close to my house.", "Your recent expansion shows great opportunities."], "a": 1}, {"q": "Which is better?", "o": ["I read about your sustainability program and loved it.", "Everyone says you’re a good company."], "a": 0}, {"q": "Which is better?", "o": ["I’m looking for a challenge that matches my skills.", "I hope this job is easy."], "a": 0}, {"q": "Which is better?", "o": ["I’ve tried everything else.", "This role fits my experience in customer service."], "a": 1}, {"q": "Which is better?", "o": ["I just saw your ad.", "I was impressed by your ad, especially the training program."], "a": 1}]};
 SIM["sim-3"]={"who": "Ms. Lindgren", "turns": [{"q": "Why do you want to work at GreenLoop?", "opts": [{"t": "I want to work anywhere that pays on time.", "s": 0, "fb": "Not motivated by the company."}, {"t": "I care about sustainability, and I admire how you repair and resell bikes.", "s": 3, "fb": "Specific and sincere."}, {"t": "I heard you’re growing, so it looked like a safe job.", "s": 1, "fb": "Too general."}]}, {"q": "Why this role in particular?", "opts": [{"t": "I enjoy solving customer problems, and I’d love to suggest ideas for improvement.", "s": 3, "fb": "Role and interests connect."}, {"t": "It seems easy.", "s": 0, "fb": "Never say this."}, {"t": "It’s similar to my old job.", "s": 1, "fb": "Fine, but explain what you’d bring."}]}, {"q": "Where do you see yourself in five years?", "opts": [{"t": "Growing into a team leader role here.", "s": 3, "fb": "Matches the ad’s career path."}, {"t": "Running my own company.", "s": 1, "fb": "Honest, but it shows you may leave."}, {"t": "No idea.", "s": 0, "fb": "No direction is a worry."}]}], "verdicts": [[0.8, "⭐ Excellent! Ms. Lindgren sees a motivated, well-prepared candidate."], [0.5, "👍 Good, but try to be more specific."], [0, "🔄 Try again: mention the company, the role and your future."]]};
 RL["rl-3"]=[["Why do you want to work for us?", "I admire… because… and I’d love to…"], ["What attracted you to this role?", "I was attracted to… because…"], ["Where do you see yourself in five years?", "In five years, I hope to…"], ["What do you know about our company?", "I know that you… and I like that…"], ["What would make you stay with us long-term?", "I would stay if… I value…"]];
@@ -1493,7 +1517,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-    '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
+        '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
     '.hero .kicker{font-size:.75rem;margin:0 0 3px}.hero h1{font-family:Georgia,serif;font-size:1.85rem;margin:0 0 3px;line-height:1.15}.hero .dt{margin:0 0 9px;font-size:.98rem;color:#FFD84D;font-weight:700}'+
     '.hero .row{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero .row p{margin:0;font-size:1.02rem;line-height:1.45}'+
     '.hero .bigbtn.lesson{flex:none;background:#FFD84D;color:#2B1B5E!important;border:0;box-shadow:none;font-size:1.02rem;padding:9px 18px;white-space:nowrap}.notes-title{margin-top:16px}'+

@@ -496,6 +496,9 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 
 .rf-track{display:none!important}
 
+.ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
+.btn-row{flex-wrap:wrap}
+
 :root{--c1:#5A1A4A;--c2:#FF8A5B;--c3:#FFEFE8;--c4:#FFD84D;--ink:#5A1A4A;--fh:'Fredoka';--pattern:radial-gradient(rgba(255,138,91,.14) 2px,transparent 2px);--patsize:32px 32px;}
 body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#5A1A4A;}
 #s1,#hw-cover{background:radial-gradient(circle at 75% 20%, #A63D86 0%, #5A1A4A 55%, #2B0A24 100%);align-items:center;justify-content:center;}
@@ -611,7 +614,7 @@ body{font-family:'DM Sans','Segoe UI',system-ui,sans-serif;background:#5A1A4A;}
   <div class="banner banner-speaking">🎤 Speaking</div>
   <div class="slide-main"><div class="content">
     <h2>Your three questions</h2>
-<p class="inst-light">Prepare smart questions for the end of the interview.</p><div class="ab" data-key="L9-q" data-title="Questions for the interviewer" data-order="L9-a"><div class="ab-step"><div class="ab-lab">1 · About the role</div><div class="ab-hint">A question about daily work or success.</div><div class="sup"><span class="ab-sup">Frame: What does… look like?</span></div><textarea class="ab-in" rows="2" aria-label="1 · About the role"></textarea></div><div class="ab-step"><div class="ab-lab">2 · About the team</div><div class="ab-hint">A question about people or culture.</div><div class="sup"><span class="ab-sup">Frame: Could you tell me more about…?</span></div><textarea class="ab-in" rows="2" aria-label="2 · About the team"></textarea></div><div class="ab-step"><div class="ab-lab">3 · About growth</div><div class="ab-hint">A question about learning or the future.</div><div class="sup"><span class="ab-sup">Frame: What opportunities are there to…?</span></div><textarea class="ab-in" rows="2" aria-label="3 · About growth"></textarea></div><div class="ab-step"><div class="ab-lab">4 · Closing line</div><div class="ab-hint">A polite closing sentence.</div><div class="sup"><span class="ab-sup">Frame: Thank you for your time. I look forward to…</span></div><textarea class="ab-in" rows="2" aria-label="4 · Closing line"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>
+<p class="inst-light">Prepare smart questions for the end of the interview.</p><div class="ab" data-key="L9-q" data-title="Questions for the interviewer" data-order="L9-a"><div class="ab-step"><div class="ab-lab">1 · About the role</div><div class="ab-hint">A question about daily work or success.</div><div class="sup"><span class="ab-sup">Frame: What does… look like?</span></div><textarea class="ab-in" rows="2" aria-label="1 · About the role"></textarea></div><div class="ab-step"><div class="ab-lab">2 · About the team</div><div class="ab-hint">A question about people or culture.</div><div class="sup"><span class="ab-sup">Frame: Could you tell me more about…?</span></div><textarea class="ab-in" rows="2" aria-label="2 · About the team"></textarea></div><div class="ab-step"><div class="ab-lab">3 · About growth</div><div class="ab-hint">A question about learning or the future.</div><div class="sup"><span class="ab-sup">Frame: What opportunities are there to…?</span></div><textarea class="ab-in" rows="2" aria-label="3 · About growth"></textarea></div><div class="ab-step"><div class="ab-lab">4 · Closing line</div><div class="ab-hint">A polite closing sentence.</div><div class="sup"><span class="ab-sup">Frame: Thank you for your time. I look forward to…</span></div><textarea class="ab-in" rows="2" aria-label="4 · Closing line"></textarea></div><div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="abToNotes(this)">📝 Copy to my notes</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button><span class="ab-copied"></span></div><div class="ab-out"></div></div>
   </div></div>
 </div>
 
@@ -832,7 +835,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-        '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
+    '@media print{@page{margin:1.5cm}body{padding:0}button{display:none}}'+
   '</style></head><body>'+
   '<div class="header"><h1>AEF4 4B – A Risky Business</h1><div class="lesson-link">📝 Here you can see our Notes from Class.</div><div class="lesson-link" style="margin-top:4px;">You can also access <a href="https://teacher-nanda.github.io/AEF-Courses/AEF4-4B/index.html" target="_blank">this link</a> to review the lesson material and do your optional Homework activities.</div></div>'+
   '<p class="date">'+new Date().toLocaleDateString('en-US',{weekday:'long',year:'numeric',month:'long',day:'numeric'})+'</p>'+
@@ -1389,6 +1392,27 @@ function ehReset(id){ document.querySelectorAll('#'+id+' .eh-item').forEach(func
 
 window.addEventListener('load', function(){ document.querySelectorAll('.sim').forEach(function(b){ simInit(b.id); }); document.querySelectorAll('.rf').forEach(function(b){ rfInit(b.id); }); });
 
+/* ===================== COPY TO CLASS NOTES ===================== */
+function abToNotes(btn){
+  var ab=btn.closest('.ab'), tag=document.createElement('div'), n=0, key=ab.dataset.key;
+  var box=document.createElement('div'); box.setAttribute('data-abnote',key);
+  var h=document.createElement('b'); h.textContent='✍️ '+ab.dataset.title; box.appendChild(h);
+  ab.querySelectorAll('.ab-step').forEach(function(st){
+    var v=st.querySelector('.ab-in').value.trim(); if(!v) return; n++;
+    var line=document.createElement('div'); var lb=document.createElement('b'); lb.textContent=st.querySelector('.ab-lab').textContent+': '; line.appendChild(lb); line.appendChild(document.createTextNode(v)); box.appendChild(line);
+  });
+  var msg=btn.parentNode.querySelector('.ab-copied');
+  if(!n){ msg.textContent='Write at least one part first.'; msg.className='ab-copied warn'; return; }
+  saveNotes();
+  var wrap=document.createElement('div'); wrap.innerHTML=notesData[current]||'';
+  wrap.querySelectorAll('[data-abnote="'+key+'"]').forEach(function(x){ x.parentNode.removeChild(x); });
+  wrap.appendChild(box); wrap.appendChild(document.createElement('br'));
+  notesData[current]=wrap.innerHTML;
+  try{ localStorage.setItem(notesStoreKey, JSON.stringify(notesData)); }catch(e){}
+  loadNotes(current);
+  msg.textContent='✓ Copied to your notes. It will appear in the Save Notes PDF.'; msg.className='ab-copied';
+}
+
 SIM["sim-9"]={"who": "Ms. Patel", "turns": [{"q": "Would you like to explain that again? I did not hear the last part.", "opts": [{"t": "Of course. What I meant was that I led the project from start to finish.", "s": 3, "fb": "Calm and clear."}, {"t": "I already said it.", "s": 0, "fb": "Impolite."}, {"t": "Never mind.", "s": 1, "fb": "You lose the chance to explain."}]}, {"q": "Do you have any questions for us?", "opts": [{"t": "Yes. How will success be measured in the first six months?", "s": 3, "fb": "Smart and forward-looking."}, {"t": "No, I think I’m fine.", "s": 1, "fb": "Missed opportunity."}, {"t": "When can I take a vacation?", "s": 0, "fb": "Not the right moment."}]}, {"q": "Thank you for coming in. We will contact you next week.", "opts": [{"t": "Thank you for your time. I enjoyed our conversation, and I look forward to hearing from you.", "s": 3, "fb": "Polite and positive."}, {"t": "Okay, bye.", "s": 1, "fb": "Too short."}, {"t": "Please call me today.", "s": 0, "fb": "Too pushy."}]}], "verdicts": [[0.8, "⭐ Great! You finished with confidence."], [0.5, "👍 Good, but a stronger ending is possible."], [0, "🔄 Try again: be polite, curious and calm."]]};
 RL["rl-9"]=[["Do you have any questions for us?", "I’d like to ask about… / How will…?"], ["Is there anything else you’d like to add?", "Yes, I’d like to add that…"], ["How do you handle stress?", "When I feel stressed, I…"], ["What would you do if you did not understand a question?", "I would politely ask…"], ["Do you have any concerns about the job?", "I’d like to understand more about…"]];
 
@@ -1484,7 +1508,7 @@ function savePDF(){
     '[style*="background-color"]{color:#1a1a1a!important}'+
     '.card-body,.card-body *{color:#1a1a1a!important}'+
     '*{print-color-adjust:exact;-webkit-print-color-adjust:exact}'+
-    '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
+        '.hero{display:block;background:#2B1B5E;padding:14px 24px 16px;border-radius:0 0 16px 16px;overflow:visible}.hero:after{display:none}'+
     '.hero .kicker{font-size:.75rem;margin:0 0 3px}.hero h1{font-family:Georgia,serif;font-size:1.85rem;margin:0 0 3px;line-height:1.15}.hero .dt{margin:0 0 9px;font-size:.98rem;color:#FFD84D;font-weight:700}'+
     '.hero .row{display:flex;align-items:center;justify-content:space-between;gap:18px}.hero .row p{margin:0;font-size:1.02rem;line-height:1.45}'+
     '.hero .bigbtn.lesson{flex:none;background:#FFD84D;color:#2B1B5E!important;border:0;box-shadow:none;font-size:1.02rem;padding:9px 18px;white-space:nowrap}.notes-title{margin-top:16px}'+

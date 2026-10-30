@@ -118,7 +118,7 @@ function rlNext(id){
   var list = RL[id], box = document.getElementById(id);
   var n = nextNoRepeat('rl-'+id, list.length);
   box.querySelector('.rl-q').textContent = list[n][0];
-  var f = box.querySelector('.rl-f'); if (f) f.textContent = list[n][1] || '';
+  var f = box.querySelector('.rl-f'); if (f){ f.textContent = list[n][1] || ''; if (list[n][2]){ var x=document.createElement('div'); x.className='rl-ex'; x.textContent='💡 Example: '+list[n][2]; f.appendChild(x); } }
   box.classList.add('spun');
 }
 

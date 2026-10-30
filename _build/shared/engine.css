@@ -179,3 +179,5 @@ h2 { font-family:var(--fh,'Fredoka'),sans-serif; color:var(--c1); }
 
 .ab-copied{align-self:center;font-weight:800;color:#1A7A4A;margin-left:6px}.ab-copied.warn{color:#C4614A}
 .btn-row{flex-wrap:wrap}
+
+.ab-ex{display:block;margin-top:4px;font-style:italic;color:#1A5E7A}.rl-ex{display:block;margin-top:8px;font-style:italic}

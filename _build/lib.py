@@ -1,3 +1,4 @@
+import examples as EX
 # -*- coding: utf-8 -*-
 import random, html, math
 
@@ -98,6 +99,7 @@ def timer(eid, sec):
 
 def roulette(L, eid, items, label='🎲 Ask me!'):
     import json
+    items=[list(it)+[EX.RL.get((eid,i_),'')] for i_,it in enumerate(items)]
     L.js += 'RL[%s]=%s;\n' % (json.dumps(eid), json.dumps(items, ensure_ascii=False))
     return '<div class="rl" id="%s"><div class="rl-q">Press the button to get your interview question.</div><div class="rl-f sup"></div><button onclick="rlNext(\'%s\')">%s</button></div>' % (eid, eid, label)
 
@@ -109,7 +111,9 @@ def branch(situation, opts):
 def ab(key, title, steps, order):
     """steps: (label, hint, support_frame)"""
     s=''
-    for lab,hint,frame in steps:
+    for i_,(lab,hint,frame) in enumerate(steps):
+        ex_=EX.AB.get((key,i_))
+        if frame and ex_: frame += '</span><span class="ab-ex">💡 Example: ' + ex_.replace('<','&lt;')
         s += '<div class="ab-step"><div class="ab-lab">%s</div><div class="ab-hint">%s</div>%s<textarea class="ab-in" rows="2" aria-label="%s"></textarea></div>' % (lab, hint, sup('<span class="ab-sup">%s</span>' % frame) if frame else '', q(lab))
     return ('<div class="ab" data-key="%s" data-title="%s" data-order="%s">%s<div class="btn-row"><button class="btn-check" onclick="abBuild(this)">✨ Build my answer</button><button class="btn-reset" onclick="abClear(this)">Clear</button><button class="btn-suggest" onclick="openNotebook()">📓 My Interview Notebook</button></div><div class="ab-out"></div></div>' % (key, q(title), order, s))
 
